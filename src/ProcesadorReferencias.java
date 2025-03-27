@@ -43,11 +43,6 @@ public class ProcesadorReferencias extends Thread {
         }
     }
 
-    public int getHits() { 
-        return contadorHits; 
-        }
-        
-    public int getMisses() { 
-        return contadorMisses; 
-        }
+    public int getHits() { return contadorHits; }
+    public int getMisses() { return contadorMisses; }
 }
