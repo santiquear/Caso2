@@ -21,48 +21,47 @@ public class GestorMemoria {
                 return m.numeroMarco;
             }
         }
-        return -1; // No hay marcos libres
+        return -1;
     }
 
     public synchronized void reemplazarPagina(Pagina nuevaPagina) {
-        // Algoritmo NRU
         List<Pagina> enRAM = tablaPaginas.getPaginasEnRAM();
         Pagina victima = null;
-        // Clase 0: R=0, M=0
+    
         for (Pagina p : enRAM) {
-            if (!p.bitReferencia && !p.bitModificacion) {
+            if (!p.bitReferencia && !p.bitModificacion && victima == null) {
                 victima = p;
-                break;
             }
         }
-        // Clase 1: R=0, M=1
+    
         if (victima == null) {
             for (Pagina p : enRAM) {
-                if (!p.bitReferencia && p.bitModificacion) {
+                if (!p.bitReferencia && p.bitModificacion && victima == null) {
                     victima = p;
-                    break;
                 }
             }
         }
-        // Clase 2: R=1, M=0
+    
         if (victima == null) {
             for (Pagina p : enRAM) {
-                if (p.bitReferencia && !p.bitModificacion) {
+                if (p.bitReferencia && !p.bitModificacion && victima == null) {
                     victima = p;
-                    break;
                 }
             }
         }
-        // Clase 3: R=1, M=1
-        if (victima == null) {
-            victima = enRAM.get(0); // Primera página si todas son R=1, M=1
+    
+        if (victima == null && !enRAM.isEmpty()) {
+            victima = enRAM.get(0);
         }
-
-        Marco marco = marcos.get(victima.marcoAsignado);
-        marco.paginaAsignada = nuevaPagina;
-        victima.enRAM = false;
-        victima.marcoAsignado = -1;
-        nuevaPagina.enRAM = true;
-        nuevaPagina.marcoAsignado = marco.numeroMarco;
+    
+        if (victima != null) {
+            Marco marco = marcos.get(victima.marcoAsignado);
+            marco.paginaAsignada = nuevaPagina;
+            victima.enRAM = false;
+            victima.marcoAsignado = -1;
+            nuevaPagina.enRAM = true;
+            nuevaPagina.marcoAsignado = marco.numeroMarco;
+        }
     }
+    
 }
