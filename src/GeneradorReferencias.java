@@ -1,7 +1,9 @@
+import cosasdefault.Imagen;
 import java.io.*;
 import java.util.*;
 
 public class GeneradorReferencias {
+
     private int tamañoPagina;
     private String nombreArchivoImagen;
 
@@ -12,16 +14,15 @@ public class GeneradorReferencias {
 
     public void generarReferencias() throws IOException {
         Imagen img = new Imagen(nombreArchivoImagen);
-        int alto = img.alto, ancho = img.ancho;
+        int alto = img.getAlto();
+        int ancho = img.getAncho();
 
-        
-        long tamañoImagen = alto * ancho * 3L;
-        long tamañoFiltros = 3 * 3 * 4 * 2L; 
+        long tamañoImagen = (long) alto * ancho * 3;
+        long tamañoFiltros = 3 * 3 * 4 * 2L;
         long tamañoRespuesta = tamañoImagen;
         long totalBytes = tamañoImagen + tamañoFiltros + tamañoRespuesta;
         int numPaginas = (int) Math.ceil(totalBytes / (double) tamañoPagina);
 
-        
         long offsetImagen = 0;
         long offsetFiltroX = tamañoImagen;
         long offsetFiltroY = offsetFiltroX + 3 * 3 * 4;
@@ -61,7 +62,6 @@ public class GeneradorReferencias {
             }
         }
 
-       
         try (PrintWriter pw = new PrintWriter("referencias.txt")) {
             pw.println("TP=" + tamañoPagina);
             pw.println("NF=" + alto);
@@ -74,3 +74,4 @@ public class GeneradorReferencias {
         }
     }
 }
+

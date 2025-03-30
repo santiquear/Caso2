@@ -1,3 +1,4 @@
+package cosasdefault;
 import java.io.*;
 
 public class Imagen {
@@ -69,4 +70,45 @@ public class Imagen {
      }
      fos.close();
      } catch (IOException e) { e.printStackTrace(); }
-     }}
+     }
+
+    public byte[] getHeader() {
+        return header;
+    }
+
+    public void setHeader(byte[] header) {
+        this.header = header;
+    }
+
+    public byte[][][] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[][][] imagen) {
+        this.imagen = imagen;
+    }
+
+    public int getAlto() {
+        return alto;
+    }
+
+    public void setAlto(int alto) {
+        this.alto = alto;
+    }
+
+    public int getAncho() {
+        return ancho;
+    }
+
+    public void setAncho(int ancho) {
+        this.ancho = ancho;
+    }
+
+    public int getPadding() {
+        return padding;
+    }
+
+    public void setPadding(int padding) {
+        this.padding = padding;
+    }
+}

@@ -1,3 +1,4 @@
+package estructurasdedatos;
 import java.util.*;
 
 public class GestorMemoria {
@@ -14,11 +15,11 @@ public class GestorMemoria {
 
     public synchronized int asignarMarco(Pagina pagina) {
         for (Marco m : marcos) {
-            if (m.paginaAsignada == null) {
-                m.paginaAsignada = pagina;
-                pagina.enRAM = true;
-                pagina.marcoAsignado = m.numeroMarco;
-                return m.numeroMarco;
+            if (m.getPaginaAsignada() == null) {
+                m.setPaginaAsignada(pagina);
+                pagina.setEnRAM(true);
+                pagina.setMarcoAsignado(m.getNumeroMarco());
+                return m.getNumeroMarco();
             }
         }
         return -1;
@@ -27,41 +28,40 @@ public class GestorMemoria {
     public synchronized void reemplazarPagina(Pagina nuevaPagina) {
         List<Pagina> enRAM = tablaPaginas.getPaginasEnRAM();
         Pagina victima = null;
-    
+
         for (Pagina p : enRAM) {
-            if (!p.bitReferencia && !p.bitModificacion && victima == null) {
+            if (!p.isBitReferencia() && !p.isBitModificacion() && victima == null) {
                 victima = p;
             }
         }
-    
+
         if (victima == null) {
             for (Pagina p : enRAM) {
-                if (!p.bitReferencia && p.bitModificacion && victima == null) {
+                if (!p.isBitReferencia() && p.isBitModificacion() && victima == null) {
                     victima = p;
                 }
             }
         }
-    
+
         if (victima == null) {
             for (Pagina p : enRAM) {
-                if (p.bitReferencia && !p.bitModificacion && victima == null) {
+                if (p.isBitReferencia() && !p.isBitModificacion() && victima == null) {
                     victima = p;
                 }
             }
         }
-    
+
         if (victima == null && !enRAM.isEmpty()) {
             victima = enRAM.get(0);
         }
-    
+
         if (victima != null) {
-            Marco marco = marcos.get(victima.marcoAsignado);
-            marco.paginaAsignada = nuevaPagina;
-            victima.enRAM = false;
-            victima.marcoAsignado = -1;
-            nuevaPagina.enRAM = true;
-            nuevaPagina.marcoAsignado = marco.numeroMarco;
+            Marco marco = marcos.get(victima.getMarcoAsignado());
+            marco.setPaginaAsignada(nuevaPagina);
+            victima.setEnRAM(false);
+            victima.setMarcoAsignado(-1);
+            nuevaPagina.setEnRAM(true);
+            nuevaPagina.setMarcoAsignado(marco.getNumeroMarco());
         }
     }
-    
-}
+} 

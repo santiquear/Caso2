@@ -1,10 +1,17 @@
+import estructurasdedatos.GestorMemoria;
+import estructurasdedatos.TablaPaginas;
 import java.io.*;
 import java.util.*;
+import patronlectoredactor.Lector;
+import patronlectoredactor.Redactor;
+
 
 public class Main {
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
-        while (true) {
+        Boolean flag = true;
+
+        while (flag) {
             System.out.println("1. Generar Referencias");
             System.out.println("2. Simular Paginación");
             System.out.println("3. Salir");
@@ -46,23 +53,22 @@ public class Main {
                 GestorMemoria gestorMemoria = new GestorMemoria(numMarcos, tablaPaginas);
 
                 
-                ProcesadorReferencias procesador = new ProcesadorReferencias(referencias, tablaPaginas, gestorMemoria);
-                ActualizadorEstado actualizador = new ActualizadorEstado(tablaPaginas);
-                procesador.start();
-                actualizador.start();
+                Lector lector = new Lector(referencias, tablaPaginas, gestorMemoria);
+                Redactor redactor = new Redactor(tablaPaginas);
+                lector.start();
+                redactor.start();
 
                 
                 try {
-                    procesador.join();
-                    actualizador.detener();
-                    actualizador.join();
+                    lector.join();
+                    redactor.detener();
+                    redactor.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-        
-                int hits = procesador.getHits();
-                int misses = procesador.getMisses();
+                int hits = lector.getHits();
+                int misses = lector.getMisses();
                 double porcentajeHits = (hits / (double) nr) * 100;
                 long tiempoReal = hits * 50L + misses * 10_000_000L; 
                 long tiempoTodosHits = nr * 50L; 
@@ -71,7 +77,7 @@ public class Main {
                 System.out.printf("Tiempo Real: %d ns, Todos Hits: %d ns, Todos Misses: %d ns\n",
                         tiempoReal, tiempoTodosHits, tiempoTodosMisses);
             } else if (opcion == 3) {
-                break;
+                flag = false;
             } else {
                 System.out.println("Opción no válida. Intente de nuevo.");
             }

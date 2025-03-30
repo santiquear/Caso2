@@ -1,8 +1,14 @@
-public class ActualizadorEstado extends Thread {
+package patronlectoredactor;
+
+import estructurasdedatos.Pagina;
+import estructurasdedatos.TablaPaginas;
+
+public class Redactor extends Thread {
+
     private TablaPaginas tablaPaginas;
     private volatile boolean running = true;
 
-    public ActualizadorEstado(TablaPaginas tabla) {
+    public Redactor(TablaPaginas tabla) {
         this.tablaPaginas = tabla;
     }
 
@@ -13,7 +19,7 @@ public class ActualizadorEstado extends Thread {
                 Thread.sleep(1);
                 synchronized (tablaPaginas) {
                     for (Pagina p : tablaPaginas.getPaginasEnRAM()) {
-                        p.bitReferencia = false;
+                        p.setBitReferencia(false);
                     }
                 }
             } catch (InterruptedException e) {
@@ -22,5 +28,7 @@ public class ActualizadorEstado extends Thread {
         }
     }
 
-    public void detener() { running = false; }
-}
+    public void detener() {
+        running = false;
+    }
+} 

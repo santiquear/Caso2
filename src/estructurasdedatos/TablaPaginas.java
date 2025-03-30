@@ -1,3 +1,4 @@
+package estructurasdedatos;
 import java.util.*;
 
 public class TablaPaginas {
@@ -16,14 +17,16 @@ public class TablaPaginas {
 
     public synchronized void actualizarBits(int numeroPagina, boolean ref, boolean mod) {
         Pagina p = paginas.get(numeroPagina);
-        p.bitReferencia = ref;
-        p.bitModificacion = mod;
+        p.setBitReferencia(ref);
+        p.setBitModificacion(mod);
     }
 
     public synchronized List<Pagina> getPaginasEnRAM() {
         List<Pagina> enRAM = new ArrayList<>();
         for (Pagina p : paginas) {
-            if (p.enRAM) enRAM.add(p);
+            if (p.isEnRAM()) {
+                enRAM.add(p);
+            }
         }
         return enRAM;
     }
