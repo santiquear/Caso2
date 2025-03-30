@@ -14,14 +14,12 @@ public class GeneradorReferencias {
         Imagen img = new Imagen(nombreArchivoImagen);
         int alto = img.alto, ancho = img.ancho;
 
-        
         long tamañoImagen = alto * ancho * 3L;
-        long tamañoFiltros = 3 * 3 * 4 * 2L; 
+        long tamañoFiltros = 3 * 3 * 4 * 2L;
         long tamañoRespuesta = tamañoImagen;
         long totalBytes = tamañoImagen + tamañoFiltros + tamañoRespuesta;
         int numPaginas = (int) Math.ceil(totalBytes / (double) tamañoPagina);
 
-        
         long offsetImagen = 0;
         long offsetFiltroX = tamañoImagen;
         long offsetFiltroY = offsetFiltroX + 3 * 3 * 4;
@@ -44,10 +42,14 @@ public class GeneradorReferencias {
                         int paginaX = (int) (posX / tamañoPagina);
                         int despX = (int) (posX % tamañoPagina);
                         referencias.add(String.format("SOBEL_X[%d][%d], %d, %d, R", fm, fn, paginaX, despX));
+                        referencias.add(String.format("SOBEL_X[%d][%d], %d, %d, R", fm, fn, paginaX, despX));
+                        referencias.add(String.format("SOBEL_X[%d][%d], %d, %d, R", fm, fn, paginaX, despX));
 
                         long posY = (fm * 3 + fn) * 4 + offsetFiltroY;
                         int paginaY = (int) (posY / tamañoPagina);
                         int despY = (int) (posY % tamañoPagina);
+                        referencias.add(String.format("SOBEL_Y[%d][%d], %d, %d, R", fm, fn, paginaY, despY));
+                        referencias.add(String.format("SOBEL_Y[%d][%d], %d, %d, R", fm, fn, paginaY, despY));
                         referencias.add(String.format("SOBEL_Y[%d][%d], %d, %d, R", fm, fn, paginaY, despY));
                     }
                 }
@@ -61,7 +63,6 @@ public class GeneradorReferencias {
             }
         }
 
-       
         try (PrintWriter pw = new PrintWriter("referencias.txt")) {
             pw.println("TP=" + tamañoPagina);
             pw.println("NF=" + alto);
